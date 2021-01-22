@@ -34,11 +34,6 @@ export default class JXGBoard extends Component {
     let attributes = {}
     Object.assign(attributes, this.defauflboardAttributes, this.props.boardAttributes || {})
     let board = JXG.JSXGraph.initBoard(this.id, attributes)
-    if (this.props.jessieCode) {
-      board.jc.parse(this.props.logic)
-    } else {
-      this.props.logic(board)
-    }
     this.setState({
       board: board
     })
@@ -48,7 +43,9 @@ export default class JXGBoard extends Component {
   // for rendering the JSXGraph board div and any child elements
   render() {
     let style = assign(this.defaultStyle, this.props.style || {})
-
+    if (this.state.board !== null){
+      this.props.logic(this.state.board)
+    }
     return (
       <div id={this.id} className={'jxgbox ' + this.props.className} style={style} />
     )
